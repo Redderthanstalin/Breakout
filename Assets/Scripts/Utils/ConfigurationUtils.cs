@@ -25,6 +25,12 @@ public static class ConfigurationUtils
         get { return configurationData.BallImpulseForce; }
     }
 
+    public static int TotalBalls
+    {
+        get { return configurationData.TotalBalls; }
+        set { TotalBalls = value; }
+    }
+
     #endregion
     
     /// <summary>

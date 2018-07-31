@@ -53,30 +53,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\ConfigurationData.cs" />
      <Compile Include="Assets\Scripts\Gameplay\Ball.cs" />
+     <Compile Include="Assets\Scripts\Gameplay\BallSpawner.cs" />
      <Compile Include="Assets\Scripts\Gameplay\Block.cs" />
+     <Compile Include="Assets\Scripts\Gameplay\BonusBlock.cs" />
+     <Compile Include="Assets\Scripts\Gameplay\FreezerBlock.cs" />
      <Compile Include="Assets\Scripts\Gameplay\Paddle.cs" />
+     <Compile Include="Assets\Scripts\Gameplay\SpeedUpBlock.cs" />
+     <Compile Include="Assets\Scripts\HUDManager.cs" />
+     <Compile Include="Assets\Scripts\Utils\ConfigurationData.cs" />
      <Compile Include="Assets\Scripts\Utils\ConfigurationUtils.cs" />
      <Compile Include="Assets\Scripts\Utils\GameInitializer.cs" />
+     <Compile Include="Assets\Scripts\Utils\GameManager.cs" />
      <Compile Include="Assets\Scripts\Utils\ScreenUtils.cs" />
- <Reference Include="UnityEditor.StandardEvents">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.TextMeshPro">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
- </Reference>
  <Reference Include="Unity.ProGrids">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.ProGrids.dll</HintPath>
  </Reference>
  <Reference Include="Unity.ProGrids.Editor">
- <HintPath>D:/Coursera/CourseraPractice/Breakout/Breakout/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.ProGrids.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor.StandardEvents">
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro.Editor">
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.PackageManagerUI.Editor">
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.TextMeshPro">
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b7/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

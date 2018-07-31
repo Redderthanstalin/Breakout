@@ -17,6 +17,8 @@ public class ConfigurationData
     static float paddleMoveUnitsPerSecond = 10;
     static float ballImpulseForce = 200;
 
+    static int totalBalls = 10;
+
     #endregion
 
     #region Properties
@@ -37,6 +39,11 @@ public class ConfigurationData
     public float BallImpulseForce
     {
         get { return ballImpulseForce; }
+    }
+
+    public int TotalBalls
+    {
+        get { return totalBalls; }
     }
 
     #endregion
