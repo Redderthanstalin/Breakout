@@ -17,7 +17,20 @@ public class ConfigurationData
     static float paddleMoveUnitsPerSecond = 10;
     static float ballImpulseForce = 200;
 
+    static int minSpawnTime = 2;
+    static int maxSpawnTime = 5;
+
     static int totalBalls = 10;
+
+    static int StandardBlockPercent = 40;
+    static int BonusBlockPercent = 30;
+    static int FreezerBlockPercent = 15;
+    static int SpeedupBlockPercent = 15;
+
+    static int StandardBlockPoints = 1;
+    static int BonusBlockPoints = 2;
+    static int FreezerBlockPoints = 5;
+    static int SpeedupBlockPoints = 5;
 
     #endregion
 
@@ -46,6 +59,16 @@ public class ConfigurationData
         get { return totalBalls; }
     }
 
+    public int StandardBlockPercent = 40;
+    static int BonusBlockPercent = 30;
+    static int FreezerBlockPercent = 15;
+    static int SpeedupBlockPercent = 15;
+
+    static int StandardBlockPoints = 1;
+    static int BonusBlockPoints = 2;
+    static int FreezerBlockPoints = 5;
+    static int SpeedupBlockPoints = 5;
+
     #endregion
 
     #region Constructor
@@ -58,25 +81,25 @@ public class ConfigurationData
     /// </summary>
     public ConfigurationData()
     {
-        //StreamReader file = null;
+        StreamReader file = null;
 
-        //try
-        //{
-        //    file = File.OpenText(Path.Combine(Application.streamingAssetsPath, ConfigurationDataFileName));
+        try
+        {
+            file = File.OpenText(Path.Combine(Application.streamingAssetsPath, ConfigurationDataFileName));
 
-        //    string names = file.ReadLine();
-        //    string values = file.ReadLine();
+            string names = file.ReadLine();
+            string values = file.ReadLine();
 
-        //    SetConfigurationDataFields(values);
-        //}
-        //catch(Exception e)
-        //{
+            SetConfigurationDataFields(values);
+        }
+        catch(Exception e)
+        {
 
-        //}
-        //finally
-        //{
-        //    file.Close();
-        //}
+        }
+        finally
+        {
+            file.Close();
+        }
     }
 
     #endregion
@@ -86,6 +109,17 @@ public class ConfigurationData
         string[] values = s.Split(","[0]);
         paddleMoveUnitsPerSecond = float.Parse(values[0]);
         ballImpulseForce = float.Parse(values[1]);
+        minSpawnTime = int.Parse(values[2]);
+        maxSpawnTime = int.Parse(values[3]);
+        totalBalls = int.Parse(values[4]);
+        StandardBlockPercent = int.Parse(values[5]);
+        BonusBlockPercent = int.Parse(values[6]);
+        FreezerBlockPercent = int.Parse(values[7]);
+        SpeedupBlockPercent = int.Parse(values[8]);
+        StandardBlockPoints = int.Parse(values[9]);
+        BonusBlockPoints = int.Parse(values[10]);
+        FreezerBlockPoints = int.Parse(values[11]);
+        SpeedupBlockPoints = int.Parse(values[12]);
 
     }
 }

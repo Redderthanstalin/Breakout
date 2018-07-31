@@ -31,8 +31,24 @@ public static class ConfigurationUtils
         set { TotalBalls = value; }
     }
 
+    public static int MinSpawnTime
+    {
+        get { return configurationData.minSpawnTime; }
+    }
+    static int maxSpawnTime = 5;
+
+    static int StandardBlockPercent = 40;
+    static int BonusBlockPercent = 30;
+    static int FreezerBlockPercent = 15;
+    static int SpeedupBlockPercent = 15;
+
+    static int StandardBlockPoints = 1;
+    static int BonusBlockPoints = 2;
+    static int FreezerBlockPoints = 5;
+    static int SpeedupBlockPoints = 5;
+
     #endregion
-    
+
     /// <summary>
     /// Initializes the configuration utils
     /// </summary>
