@@ -36,7 +36,7 @@ public class Ball : MonoBehaviour {
         dir = Quaternion.AngleAxis(Random.Range(200, 340), Vector3.forward) * Vector3.right;
 
         m_SpriteRenderer = GetComponent<SpriteRenderer>();
-        m_NewColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+        m_NewColor = new Color(Random.value, Random.value, Random.value, 1f);
 
         m_SpriteRenderer.color = m_NewColor;
 
@@ -46,10 +46,13 @@ public class Ball : MonoBehaviour {
         spawnPosition.z = -Camera.main.transform.position.z;
 
         StartCoroutine(DelayMove());
+        StartCoroutine(alphaFade(1.0f, ballLifeSpan));
         StartCoroutine(DeathTime());
 
         
 	}
+
+
 
     IEnumerator DelayMove()
     {
@@ -68,6 +71,19 @@ public class Ball : MonoBehaviour {
         }
   
     }
+
+    //Make the ball slowly fade out during it's lifetime for player feedback
+    IEnumerator alphaFade(float aValue, float aTime)
+    {
+        float alpha = m_NewColor.a;
+        for(float t = 1.0f; t > 0.0f; t -= Time.deltaTime / aTime)
+        {
+            Color newcolor = new Color(m_NewColor.r, m_NewColor.g, m_NewColor.b, t);
+            m_SpriteRenderer.color = newcolor;
+            yield return null;
+        }
+        
+    }
 	
 	public void SetDirection(Vector2 direction)
     {
@@ -77,8 +93,12 @@ public class Ball : MonoBehaviour {
 
     void OnBecameInvisible()
     {
-        Debug.Log("I'm so invisible right now!");
         Destroy(gameObject);
         ballSpawner.SpawnNewBall();
+    }
+
+    void OnApplicationQuit()
+    {
+        Destroy(this.gameObject);
     }
 }

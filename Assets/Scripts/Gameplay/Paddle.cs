@@ -5,6 +5,7 @@ using System;
 using System.IO;
 
 public class Paddle : MonoBehaviour {
+
     //used to move the paddle
     Rigidbody2D rb2d;
     //Using this to determine the speed of the Paddle
@@ -14,6 +15,9 @@ public class Paddle : MonoBehaviour {
     //Used to store the half width of the paddle to make sure we don't go off screen.
     float halfWidth;
 
+    //Tracking items for the Freeze Method
+    Timer freezeTimer;
+    bool isFrozen = false;
 
     //Used to create a 'curved' paddle to make the game more interesting.
     const float BounceAngleHalfRange = 45f;
@@ -28,14 +32,27 @@ public class Paddle : MonoBehaviour {
         coll = gameObject.GetComponent<BoxCollider2D>();
         halfWidth = coll.size.x;
 
+        EventManager.AddFreezeEventListener(FreezerEffectActivated);
+
+        freezeTimer = gameObject.AddComponent<Timer>();
+
 	}
+
+    void Update()
+    {
+        if (freezeTimer.Finished)
+        {
+            isFrozen = false;
+            
+        }
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 
         float HorizontalInput = Input.GetAxis("Horizontal");
 
-        if(HorizontalInput != 0)
+        if(HorizontalInput != 0 && isFrozen == false)
         {
             float ClampedX = CalculateClampedX(rb2d.position.x + direction.x * HorizontalInput * Time.fixedDeltaTime);
             rb2d.MovePosition(new Vector2(ClampedX, rb2d.position.y));
@@ -64,7 +81,7 @@ public class Paddle : MonoBehaviour {
 
         if (coll.gameObject.tag == "Ball" && IsTopCollision(coll.collider))
         {
-            Ball ballScript = coll.gameObject.GetComponent<Ball>();
+            
             // calculate new ball direction
             float ballOffsetFromPaddleCenter = transform.position.x - coll.transform.position.x;
             float normalizedBallOffset = ballOffsetFromPaddleCenter / halfWidth;
@@ -73,7 +90,7 @@ public class Paddle : MonoBehaviour {
             Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
 
             // tell ball to set direction to new direction
-            
+            Ball ballScript = coll.gameObject.GetComponent<Ball>();
             ballScript.SetDirection(direction);
         }
     }
@@ -85,5 +102,19 @@ public class Paddle : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    void FreezerEffectActivated(float time)
+    {
+        if (freezeTimer.Running)
+        {
+            freezeTimer.Duration += time;
+        }else
+        {
+            freezeTimer.Duration = time;
+            freezeTimer.Run();
+            isFrozen = true;
+        }
+        
     }
 }

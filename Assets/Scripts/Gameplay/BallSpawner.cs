@@ -9,25 +9,47 @@ public class BallSpawner : MonoBehaviour {
 
     IEnumerator Ballspawning;
 
+    int minSpawn; 
+    int maxSpawn;
+
+    float ScreenZ;
+
+    float Timer;
+
 	// Use this for initialization
 	void Start () {
 
-        Ballspawning = BallSpawn(Random.Range(5, 10));
-        StartCoroutine(Ballspawning);
+        //Ballspawning = BallSpawn(Random.Range(minSpawn, maxSpawn));
+        //StartCoroutine(Ballspawning);
 
-        Debug.Log("Hey, I'm here!");
-        Debug.Log(GameManager.instance.TotalBalls > 0);
+        minSpawn = ConfigurationUtils.MinSpawnTime;
+        maxSpawn = ConfigurationUtils.MaxSpawnTime;
 
-	}
-	
+        ScreenZ = -Camera.main.transform.position.z;
 
+        Timer = Time.time + 1;
 
-    IEnumerator BallSpawn(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        SpawnNewBall();
-   
     }
+	
+    void Update()
+    {
+        if(Timer < Time.time)
+        {
+            SpawnNewBall();
+            Timer = Time.time + Random.Range(minSpawn, maxSpawn);
+        }
+    }
+
+    //IEnumerator BallSpawn(float waitTime)
+    //{
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(waitTime);
+            
+    //    }
+        
+   
+    //}
 
     public void SpawnNewBall()
     {
@@ -46,7 +68,7 @@ public class BallSpawner : MonoBehaviour {
         Vector3 position = new Vector3();
         position.x = Random.Range(ScreenUtils.ScreenLeft, ScreenUtils.ScreenRight);
         position.y = Random.Range(0, 1);
-        position.z = -Camera.main.transform.position.z;
+        position.z = ScreenZ;
         return position;
     }
 }

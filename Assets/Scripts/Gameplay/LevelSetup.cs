@@ -42,15 +42,22 @@ public class LevelSetup : MonoBehaviour {
 
     int RandomPrefab()
     {
-        int myNum = Random.Range(1, 21);
-        if(myNum <= 14)
+        int myNum = Random.Range(96, 100);
+
+        int standardChance = ConfigurationUtils.StandardBlockPercent;
+        int bonusChance = standardChance + ConfigurationUtils.BonusBlockPercent;
+        int freezerChance = bonusChance + ConfigurationUtils.FreezerBlockPercent;
+        int speedupChance = freezerChance + ConfigurationUtils.SpeedupBlockPercent;
+
+        if (myNum <= standardChance)
         {
             return 0;
-        }else if(myNum >= 15 && myNum <= 18)
+        }
+        else if(myNum > standardChance && myNum <= bonusChance)
         {
             return 1;
         }
-        else if(myNum == 19)
+        else if(myNum > bonusChance && myNum <= freezerChance)
         {
             return 2;
         }

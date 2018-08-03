@@ -33,20 +33,55 @@ public static class ConfigurationUtils
 
     public static int MinSpawnTime
     {
-        get { return configurationData.minSpawnTime; }
+        get { return configurationData.MinSpawnTime; }
     }
-    static int maxSpawnTime = 5;
+    public static int MaxSpawnTime
+    {
+        get { return configurationData.MaxSpawnTime; }
+    }
 
-    static int StandardBlockPercent = 40;
-    static int BonusBlockPercent = 30;
-    static int FreezerBlockPercent = 15;
-    static int SpeedupBlockPercent = 15;
+    public static int StandardBlockPercent
+    {
+        get { return configurationData.StandardBlockPercent; }
+    }
+    public static int BonusBlockPercent
+    {
+        get { return configurationData.BonusBlockPercent; }
+    }
+    public static int FreezerBlockPercent
+    {
+        get { return configurationData.FreezerBlockPercent; }
+    }
+    public static int SpeedupBlockPercent
+    {
+        get { return configurationData.SpeedupBlockPercent; }
+    }
 
-    static int StandardBlockPoints = 1;
-    static int BonusBlockPoints = 2;
-    static int FreezerBlockPoints = 5;
-    static int SpeedupBlockPoints = 5;
+    public static int StandardBlockPoints
+    {
+        get { return configurationData.StandardBlockPoints; }
+    }
+    public static int BonusBlockPoints
+    {
+        get { return configurationData.BonusBlockPoints; }
+    }
+    public static int FreezerBlockPoints
+    {
+        get { return configurationData.FreezerBlockPoints; }
+    }
+    public static int SpeedupBlockPoints
+    {
+        get { return configurationData.SpeedupBlockPoints; }
+    }
 
+    public static float FreezeTime
+    {
+        get { return configurationData.FreezeTime; }
+    }
+    public static float SpeedupTime
+    {
+        get { return configurationData.SpeedupTime; }
+    }
     #endregion
 
     /// <summary>

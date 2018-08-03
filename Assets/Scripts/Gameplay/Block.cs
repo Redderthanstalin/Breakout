@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class Block : MonoBehaviour {
 
-    protected int ScoreModifier = 1;
+    protected int ScoreModifier;
+
+    void Start()
+    {
+        ScoreModifier = ConfigurationUtils.StandardBlockPoints;
+    }
 
     public void AddScore()
     {
         GameManager.instance.AddPoints(ScoreModifier);
     }
 
-	public void OnCollisionEnter2D(Collision2D coll)
+	public virtual void OnCollisionEnter2D(Collision2D coll)
     {
         if(coll.gameObject.tag == "Ball")
         {

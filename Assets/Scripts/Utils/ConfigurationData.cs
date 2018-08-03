@@ -17,20 +17,23 @@ public class ConfigurationData
     static float paddleMoveUnitsPerSecond = 10;
     static float ballImpulseForce = 200;
 
-    static int minSpawnTime = 2;
-    static int maxSpawnTime = 5;
+    static int minSpawnTime = 5;
+    static int maxSpawnTime = 10;
 
     static int totalBalls = 10;
 
-    static int StandardBlockPercent = 40;
-    static int BonusBlockPercent = 30;
-    static int FreezerBlockPercent = 15;
-    static int SpeedupBlockPercent = 15;
+    static int standardBlockPercent = 70;
+    static int bonusBlockPercent = 20;
+    static int freezerBlockPercent = 5;
+    static int speedupBlockPercent = 5;
 
-    static int StandardBlockPoints = 1;
-    static int BonusBlockPoints = 2;
-    static int FreezerBlockPoints = 5;
-    static int SpeedupBlockPoints = 5;
+    static int standardBlockPoints = 1;
+    static int bonusBlockPoints = 2;
+    static int freezerBlockPoints = 5;
+    static int speedupBlockPoints = 5;
+
+    static float freezeTime = 2;
+    static float speedupTime = 2;
 
     #endregion
 
@@ -54,21 +57,63 @@ public class ConfigurationData
         get { return ballImpulseForce; }
     }
 
+    public int MinSpawnTime
+    {
+        get { return minSpawnTime; }
+    }
+    public int MaxSpawnTime
+    {
+        get { return maxSpawnTime; }
+    }
+
     public int TotalBalls
     {
         get { return totalBalls; }
     }
 
-    public int StandardBlockPercent = 40;
-    static int BonusBlockPercent = 30;
-    static int FreezerBlockPercent = 15;
-    static int SpeedupBlockPercent = 15;
+    public int StandardBlockPercent
+    {
+        get { return standardBlockPercent; }
+    } 
 
-    static int StandardBlockPoints = 1;
-    static int BonusBlockPoints = 2;
-    static int FreezerBlockPoints = 5;
-    static int SpeedupBlockPoints = 5;
+    public int BonusBlockPercent
+    {
+        get { return bonusBlockPercent; }
+    }
+    public int FreezerBlockPercent
+    {
+        get { return freezerBlockPercent; }
+    }
+    public int SpeedupBlockPercent
+    {
+        get { return speedupBlockPercent; }
+    }
 
+    public int StandardBlockPoints
+    {
+        get { return standardBlockPoints; }
+    }
+    public int BonusBlockPoints
+    {
+        get { return bonusBlockPoints; }
+    }
+    public int FreezerBlockPoints
+    {
+        get { return freezerBlockPoints; }
+    }
+    public int SpeedupBlockPoints
+    {
+        get { return speedupBlockPoints; }
+    }
+
+    public float FreezeTime
+    {
+        get { return freezeTime; }
+    }
+    public float SpeedupTime
+    {
+        get { return speedupTime; }
+    }
     #endregion
 
     #region Constructor
@@ -79,47 +124,49 @@ public class ConfigurationData
     /// read fails, the object contains default values for
     /// the configuration data
     /// </summary>
-    public ConfigurationData()
-    {
-        StreamReader file = null;
+    //public ConfigurationData()
+    //{
+    //    StreamReader file = null;
 
-        try
-        {
-            file = File.OpenText(Path.Combine(Application.streamingAssetsPath, ConfigurationDataFileName));
+    //    try
+    //    {
+    //        file = File.OpenText(Path.Combine(Application.streamingAssetsPath, ConfigurationDataFileName));
 
-            string names = file.ReadLine();
-            string values = file.ReadLine();
+    //        string names = file.ReadLine();
+    //        string values = file.ReadLine();
 
-            SetConfigurationDataFields(values);
-        }
-        catch(Exception e)
-        {
-
-        }
-        finally
-        {
-            file.Close();
-        }
-    }
+    //        SetConfigurationDataFields(values);
+    //    }
+    //    catch(Exception e)
+    //    {
+    //        Debug.Log(e.Message);
+    //    }
+    //    finally
+    //    {
+    //        file.Close();
+    //    }
+    //}
 
     #endregion
 
-    void SetConfigurationDataFields(string s)
-    {
-        string[] values = s.Split(","[0]);
-        paddleMoveUnitsPerSecond = float.Parse(values[0]);
-        ballImpulseForce = float.Parse(values[1]);
-        minSpawnTime = int.Parse(values[2]);
-        maxSpawnTime = int.Parse(values[3]);
-        totalBalls = int.Parse(values[4]);
-        StandardBlockPercent = int.Parse(values[5]);
-        BonusBlockPercent = int.Parse(values[6]);
-        FreezerBlockPercent = int.Parse(values[7]);
-        SpeedupBlockPercent = int.Parse(values[8]);
-        StandardBlockPoints = int.Parse(values[9]);
-        BonusBlockPoints = int.Parse(values[10]);
-        FreezerBlockPoints = int.Parse(values[11]);
-        SpeedupBlockPoints = int.Parse(values[12]);
+    //void SetConfigurationDataFields(string s)
+    //{
+    //    string[] values = s.Split(","[0]);
+    //    paddleMoveUnitsPerSecond = float.Parse(values[0]);
+    //    ballImpulseForce = float.Parse(values[1]);
+    //    minSpawnTime = int.Parse(values[2]);
+    //    maxSpawnTime = int.Parse(values[3]);
+    //    totalBalls = int.Parse(values[4]);
+    //    standardBlockPercent = int.Parse(values[5]);
+    //    bonusBlockPercent = int.Parse(values[6]);
+    //    freezerBlockPercent = int.Parse(values[7]);
+    //    speedupBlockPercent = int.Parse(values[8]);
+    //    standardBlockPoints = int.Parse(values[9]);
+    //    bonusBlockPoints = int.Parse(values[10]);
+    //    freezerBlockPoints = int.Parse(values[11]);
+    //    speedupBlockPoints = int.Parse(values[12]);
+    //    freezetime = float.Parse(values[13]);
+    //    speedupTime = float.Parse(values[14]);
 
-    }
+    //}
 }

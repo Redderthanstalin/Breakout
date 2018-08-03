@@ -6,7 +6,7 @@ public class SpeedUpBlock : Block {
 
 	// Use this for initialization
 	void Start () {
-        ScoreModifier = 5;
+        ScoreModifier = ConfigurationUtils.SpeedupBlockPoints;
 	}
 	
 	// Update is called once per frame

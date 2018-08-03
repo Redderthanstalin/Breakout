@@ -7,7 +7,7 @@ public class BonusBlock : Block {
     
 	// Use this for initialization
 	void Start () {
-        ScoreModifier = 2;
+        ScoreModifier = ConfigurationUtils.BonusBlockPoints;
     }
 	
 	// Update is called once per frame

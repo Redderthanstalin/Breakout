@@ -15,14 +15,19 @@ public class GameInitializer : MonoBehaviour
     /// </summary>
 	void Awake()
     {
-        if (GameManager.instance == null)
-
-            //Instantiate gameManager prefab
-            Instantiate(gameManager);
-
         // initialize screen utils
         ScreenUtils.Initialize();
         ConfigurationUtils.Initialize();
+
+        if (GameManager.instance == null)
+        {
+            //Instantiate gameManager prefab
+            Instantiate(gameManager);
+        }
+
+            
+
+        
 
     }
 }
