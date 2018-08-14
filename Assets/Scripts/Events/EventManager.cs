@@ -5,25 +5,45 @@ using UnityEngine.Events;
 
 public static class EventManager {
 
-    //Fields for the Freezer Event
-    static FreezerBlock freezeEventInvoker;
+    static PickupBlock freezeEventInvoker;
     static UnityAction<float> freezeEventListener;
 
-    public static void AddFreezeEventInvoker(FreezerBlock invoker)
+    static PickupBlock speedupEventInvoker;
+    static UnityAction<float, float> speedupEventListener;
+
+    public static void AddFreezerEventInvoker(PickupBlock invoker)
     {
         freezeEventInvoker = invoker;
         if(freezeEventListener != null)
         {
-            freezeEventInvoker.AddFreezeEffectlistener(freezeEventListener);
+            freezeEventInvoker.AddFreezerEffectListener(freezeEventListener);
         }
     }
 
-    public static void AddFreezeEventListener(UnityAction<float> listener)
+    public static void AddFreezerEventListener(UnityAction<float> listener)
     {
         freezeEventListener = listener;
         if(freezeEventInvoker != null)
         {
-            freezeEventInvoker.AddFreezeEffectlistener(listener);
+            freezeEventInvoker.AddFreezerEffectListener(listener);
+        }
+    }
+
+    public static void AddSpeedupEventInvoker(PickupBlock invoker)
+    {
+        speedupEventInvoker = invoker;
+        if(speedupEventListener != null)
+        {
+            speedupEventInvoker.AddSpeedupEffectListener(speedupEventListener);
+        }
+    }
+
+    public static void AddSpeedupEventlistener(UnityAction<float,float> listener)
+    {
+        speedupEventListener = listener;
+        if(speedupEventInvoker != null)
+        {
+            speedupEventInvoker.AddSpeedupEffectListener(listener);
         }
     }
 }

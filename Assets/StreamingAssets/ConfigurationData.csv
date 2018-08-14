@@ -1,2 +1,2 @@
-PlayerMovement,BallMovement,MinSpawnTime,MaxSpawnTime,BallsPerGame,StandardBlockPercent,BonusBlockPercent,FreezerBlockPercent,SpeedupBlockPercent,StandardBlockPercent,BonusBlockPercent,FreezerBlockPercent,SpeedupBlockPercent,FreezeTime,SpeedupTime
-10,300,5,10,10,70,20,5,5,1,2,5,5,2,2
+PaddleMoveUnitsPerSecond,BallImpulseForce,BallLifeSeconds,MinSpawnSeconds,MaxSpawnSeconds,StandardBlockPoints,BonusBlockPoints,PickupBlockPoints,StandardBlockProbability,BonusBlockProbability,FreezerBlockProbability,SpeedupBlockProbability,BallsPerGame,EffectDuration
+10,200,10,5,10,1,2,5,70,20,5,5,5,2

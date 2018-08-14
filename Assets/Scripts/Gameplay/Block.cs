@@ -2,25 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour {
+/// <summary>
+/// A block
+/// </summary>
+public class Block : MonoBehaviour
+{
+    protected int points;
 
-    protected int ScoreModifier;
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
+	void Start()
+	{
 
-    void Start()
+	}
+	
+	/// <summary>
+	/// Update is called once per frame
+	/// </summary>
+	void Update()
+	{
+		
+	}
+
+    /// <summary>
+    /// Destroys the block on collision with a ball
+    /// </summary>
+    /// <param name="coll">Coll.</param>
+    virtual protected void OnCollisionEnter2D(Collision2D coll)
     {
-        ScoreModifier = ConfigurationUtils.StandardBlockPoints;
-    }
-
-    public void AddScore()
-    {
-        GameManager.instance.AddPoints(ScoreModifier);
-    }
-
-	public virtual void OnCollisionEnter2D(Collision2D coll)
-    {
-        if(coll.gameObject.tag == "Ball")
+        if (coll.gameObject.CompareTag("Ball"))
         {
-            AddScore();
+            HUD.AddPoints(points);
             Destroy(gameObject);
         }
     }

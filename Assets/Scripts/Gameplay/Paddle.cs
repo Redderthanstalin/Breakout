@@ -1,120 +1,135 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.IO;
 
-public class Paddle : MonoBehaviour {
-
-    //used to move the paddle
+/// <summary>
+/// A paddle
+/// </summary>
+public class Paddle : MonoBehaviour
+{
+    // saved for efficiency
     Rigidbody2D rb2d;
-    //Using this to determine the speed of the Paddle
-    Vector2 direction;
+    float halfColliderWidth;
+    float halfColliderHeight;
 
-    BoxCollider2D coll;
-    //Used to store the half width of the paddle to make sure we don't go off screen.
-    float halfWidth;
+    // aiming support
+    const float BounceAngleHalfRange = 60 * Mathf.Deg2Rad;
 
-    //Tracking items for the Freeze Method
     Timer freezeTimer;
     bool isFrozen = false;
 
-    //Used to create a 'curved' paddle to make the game more interesting.
-    const float BounceAngleHalfRange = 45f;
-
-    // Use this for initialization
-    void Start () {
-
-        rb2d = gameObject.GetComponent<Rigidbody2D>();
-        direction = new Vector2(ConfigurationUtils.PaddleMoveUnitsPerSecond, 0f);
-        
-        //Initialize and get a reference to the box collider
-        coll = gameObject.GetComponent<BoxCollider2D>();
-        halfWidth = coll.size.x;
-
-        EventManager.AddFreezeEventListener(FreezerEffectActivated);
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
+	void Start()
+	{
+        // save for efficiency
+        rb2d = GetComponent<Rigidbody2D>();
+        BoxCollider2D bc2d = GetComponent<BoxCollider2D>();
+        halfColliderWidth = bc2d.size.x / 2;
+        halfColliderHeight = bc2d.size.y / 2;
 
         freezeTimer = gameObject.AddComponent<Timer>();
-
-	}
-
-    void Update()
-    {
+        EventManager.AddFreezerEventListener(FreezeEffect);
+    }
+	
+	/// <summary>
+	/// Update is called once per frame
+	/// </summary>
+	void Update()
+	{
         if (freezeTimer.Finished)
         {
             isFrozen = false;
-            
         }
-    }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
-
-        float HorizontalInput = Input.GetAxis("Horizontal");
-
-        if(HorizontalInput != 0 && isFrozen == false)
-        {
-            float ClampedX = CalculateClampedX(rb2d.position.x + direction.x * HorizontalInput * Time.fixedDeltaTime);
-            rb2d.MovePosition(new Vector2(ClampedX, rb2d.position.y));
-        }
-        
 	}
 
-    float CalculateClampedX(float newX)
+    /// <summary>
+    /// FixedUpdate is called 50 times per second
+    /// </summary>
+    void FixedUpdate()
     {
-        if(newX >= ScreenUtils.ScreenRight - halfWidth)
+        // move for horizontal input
+        float horizontalInput = Input.GetAxis("Horizontal");
+        if (horizontalInput != 0 && isFrozen != true)
         {
-            return ScreenUtils.ScreenRight - halfWidth;
-        }
-        else if(newX <= ScreenUtils.ScreenLeft + halfWidth)
-        {
-            return ScreenUtils.ScreenLeft + halfWidth;
-        }
-        else
-        {
-            return newX;
+            Vector2 position = rb2d.position;
+            position.x += horizontalInput * ConfigurationUtils.PaddleMoveUnitsPerSecond *
+                Time.deltaTime;
+            position.x = CalculateClampedX(position.x);
+            rb2d.MovePosition(position);
         }
     }
 
+    /// <summary>
+    /// Calculates an x position to clamp the paddle in the screen
+    /// </summary>
+    /// <param name="x">the x position to clamp</param>
+    /// <returns>the clamped x position</returns>
+    float CalculateClampedX(float x)
+    {
+        // clamp left and right edges
+        if (x - halfColliderWidth < ScreenUtils.ScreenLeft)
+        {
+            x = ScreenUtils.ScreenLeft + halfColliderWidth;
+        }
+        else if (x + halfColliderWidth > ScreenUtils.ScreenRight)
+        {
+            x = ScreenUtils.ScreenRight - halfColliderWidth;
+        }
+        return x;
+    }
+
+    /// <summary>
+    /// Detects collision with a ball to aim the ball
+    /// </summary>
+    /// <param name="coll">collision info</param>
     void OnCollisionEnter2D(Collision2D coll)
     {
-
-        if (coll.gameObject.tag == "Ball" && IsTopCollision(coll.collider))
+        if (coll.gameObject.CompareTag("Ball") &&
+            TopCollision(coll))
         {
-            
             // calculate new ball direction
-            float ballOffsetFromPaddleCenter = transform.position.x - coll.transform.position.x;
-            float normalizedBallOffset = ballOffsetFromPaddleCenter / halfWidth;
+            float ballOffsetFromPaddleCenter = transform.position.x -
+                coll.transform.position.x;
+            float normalizedBallOffset = ballOffsetFromPaddleCenter /
+                halfColliderWidth;
             float angleOffset = normalizedBallOffset * BounceAngleHalfRange;
             float angle = Mathf.PI / 2 + angleOffset;
             Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-
+      
             // tell ball to set direction to new direction
             Ball ballScript = coll.gameObject.GetComponent<Ball>();
             ballScript.SetDirection(direction);
         }
     }
 
-    bool IsTopCollision(Collider2D coll)
+    /// <summary>
+    /// Checks for a collision on the top of the paddle
+    /// </summary>
+    /// <returns><c>true</c>, if collision was on the top of the paddle, <c>false</c> otherwise.</returns>
+    /// <param name="coll">collision info</param>
+    bool TopCollision(Collision2D coll)
     {
-        if (coll.transform.position.y > -4)
-        {
-            return true;
-        }
-        return false;
+        const float tolerance = 0.05f;
+
+        // on top collisions, both contact points are at the same y location
+        ContactPoint2D[] contacts = coll.contacts;
+        return Mathf.Abs(contacts[0].point.y - contacts[1].point.y) < tolerance;
     }
 
-    void FreezerEffectActivated(float time)
+    void FreezeEffect(float duration)
     {
+        Debug.Log("Frozen!");
         if (freezeTimer.Running)
         {
-            freezeTimer.Duration += time;
-        }else
+            freezeTimer.Duration += duration;
+        }
+        else
         {
-            freezeTimer.Duration = time;
+            freezeTimer.Duration = duration;
             freezeTimer.Run();
             isFrozen = true;
         }
-        
     }
 }

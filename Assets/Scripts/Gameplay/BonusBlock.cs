@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BonusBlock : Block {
-
-    
-	// Use this for initialization
-	void Start () {
-        ScoreModifier = ConfigurationUtils.BonusBlockPoints;
-    }
+/// <summary>
+/// A bonus block
+/// </summary>
+public class BonusBlock : Block
+{
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
+	void Start()
+	{
+        // set points
+        points = ConfigurationUtils.BonusBlockPoints;
+	}
 	
-	// Update is called once per frame
-	void Update () {
+	/// <summary>
+	/// Update is called once per frame
+	/// </summary>
+	void Update()
+	{
 		
 	}
 }

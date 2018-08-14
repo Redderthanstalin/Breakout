@@ -2,73 +2,100 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallSpawner : MonoBehaviour {
-
+/// <summary>
+/// 
+/// </summary>
+public class BallSpawner : MonoBehaviour
+{
     [SerializeField]
-    GameObject ballPrefab;
+    GameObject prefabBall;
 
-    IEnumerator Ballspawning;
+    // spawn support
+    Vector2 spawnLocation = new Vector2(0, -1.5f);
+    Timer spawnTimer;
+    float spawnRange;
 
-    int minSpawn; 
-    int maxSpawn;
+    // collision-free support
+    bool retrySpawn = false;
+    Vector2 spawnLocationMin;
+    Vector2 spawnLocationMax;
 
-    float ScreenZ;
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
+	void Start()
+	{
+        // spawn and destroy ball to calculate
+        // spawn location min and max
+        GameObject tempBall = Instantiate<GameObject>(prefabBall);
+        BoxCollider2D collider = tempBall.GetComponent<BoxCollider2D>();
+        float ballColliderHalfWidth = collider.size.x / 2;
+        float ballColliderHalfHeight = collider.size.y / 2;
+        spawnLocationMin = new Vector2(
+            tempBall.transform.position.x - ballColliderHalfWidth,
+            tempBall.transform.position.y - ballColliderHalfHeight);
+        spawnLocationMax = new Vector2(
+            tempBall.transform.position.x + ballColliderHalfWidth,
+            tempBall.transform.position.y + ballColliderHalfHeight);
+        Destroy(tempBall);
 
-    float Timer;
+		// initialize and start spawn timer
+        spawnRange = ConfigurationUtils.MaxSpawnSeconds -
+            ConfigurationUtils.MinSpawnSeconds;
+        spawnTimer = gameObject.AddComponent<Timer>();
+        spawnTimer.Duration = GetSpawnDelay();
+        spawnTimer.Run();
 
-	// Use this for initialization
-	void Start () {
-
-        //Ballspawning = BallSpawn(Random.Range(minSpawn, maxSpawn));
-        //StartCoroutine(Ballspawning);
-
-        minSpawn = ConfigurationUtils.MinSpawnTime;
-        maxSpawn = ConfigurationUtils.MaxSpawnTime;
-
-        ScreenZ = -Camera.main.transform.position.z;
-
-        Timer = Time.time + 1;
-
-    }
+        // spwan first ball in game
+        SpawnBall();
+	}
 	
-    void Update()
-    {
-        if(Timer < Time.time)
+	/// <summary>
+	/// Update is called once per frame
+	/// </summary>
+	void Update()
+	{
+		// spawn ball and restart timer as appropriate
+        if (spawnTimer.Finished)
         {
-            SpawnNewBall();
-            Timer = Time.time + Random.Range(minSpawn, maxSpawn);
+            // don't stack with a spawn still pending
+            retrySpawn = false;
+            SpawnBall();
+            spawnTimer.Duration = GetSpawnDelay();
+            spawnTimer.Run();
+        }
+
+        // try again if spawn still pending
+        if (retrySpawn)
+        {
+            SpawnBall();
+        }
+	}
+
+    /// <summary>
+    /// Spawns a ball
+    /// </summary>
+    public void SpawnBall()
+    {
+        // make sure we don't spawn into a collision
+        if (Physics2D.OverlapArea(spawnLocationMin, spawnLocationMax) == null)
+        {
+            retrySpawn = false;
+            Instantiate(prefabBall);
+        }
+        else
+        {
+            retrySpawn = true;
         }
     }
 
-    //IEnumerator BallSpawn(float waitTime)
-    //{
-    //    while (true)
-    //    {
-    //        yield return new WaitForSeconds(waitTime);
-            
-    //    }
-        
-   
-    //}
-
-    public void SpawnNewBall()
+    /// <summary>
+    /// Gets the spawn delay in seconds for the next ball spawn
+    /// </summary>
+    /// <returns>spawn delay</returns>
+    float GetSpawnDelay()
     {
-        if(GameManager.instance.TotalBalls > 0)
-        {
-            Instantiate(ballPrefab, RandomRangeVec(), Quaternion.identity);
-            GameManager.instance.RemoveBall();
-        }
-        
-    }
-
-
-
-    Vector3 RandomRangeVec()
-    {
-        Vector3 position = new Vector3();
-        position.x = Random.Range(ScreenUtils.ScreenLeft, ScreenUtils.ScreenRight);
-        position.y = Random.Range(0, 1);
-        position.z = ScreenZ;
-        return position;
+        return ConfigurationUtils.MinSpawnSeconds +
+            Random.value * spawnRange;
     }
 }

@@ -2,103 +2,160 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour {
+/// <summary>
+/// A ball
+/// </summary>
+public class Ball : MonoBehaviour
+{
+    // move delay timer
+    Timer moveTimer;
 
+    // death timer
+    Timer deathTimer;
 
-    [SerializeField]
     BallSpawner ballSpawner;
 
-    //Used to determine the Lifespan of the ball
-    float ballLifeSpan = 20;
-
-    //stored refence to the Rigidbody 
+    //For Speedup Event
+    //Timer speedupTimer;
+    //bool isSpeedup = false;
+    bool didSpeedup = false;
     Rigidbody2D rb2d;
+    float speedupFactor;
 
-    SpriteRenderer m_SpriteRenderer;
-    Color m_NewColor;
+	/// <summary>
+	/// Use this for initialization
+	/// </summary>
+	void Start()
+	{
+        // start move timer
+        moveTimer = gameObject.AddComponent<Timer>();
+        moveTimer.Duration = 1;
+        moveTimer.Run();
 
-    //Direction the ball will move after spawning
-    Vector3 dir;
+        // start death timer
+        deathTimer = gameObject.AddComponent<Timer>();
+        deathTimer.Duration = ConfigurationUtils.BallLifeSeconds;
+        deathTimer.Run();
 
+        //Find and store ball spawner
+        ballSpawner = Camera.main.GetComponent<BallSpawner>();
 
-    //Set a random position for the ball to spawn at
-    Vector3 spawnPosition;
-
-
-
-	// Use this for initialization
-	void Start () {
-
-        ballSpawner = ballSpawner.GetComponent<BallSpawner>();
+        //EventManager.AddSpeedupEventlistener(SpeedupBall);
 
         rb2d = gameObject.GetComponent<Rigidbody2D>();
+        //speedupTimer = gameObject.AddComponent<Timer>();
 
-        dir = Quaternion.AngleAxis(Random.Range(200, 340), Vector3.forward) * Vector3.right;
+        Debug.Log(EffectUtils.IsSpeedup);
+    }
 
-        m_SpriteRenderer = GetComponent<SpriteRenderer>();
-        m_NewColor = new Color(Random.value, Random.value, Random.value, 1f);
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
+    void Update()
+	{
 
-        m_SpriteRenderer.color = m_NewColor;
+        // move when time is up
+        if (moveTimer.Finished)
+        {
+            moveTimer.Stop();
+            StartMoving();
+        }
 
-        spawnPosition = new Vector3();
-        spawnPosition.x = Random.Range(ScreenUtils.ScreenLeft, ScreenUtils.ScreenRight);
-        spawnPosition.y = Random.Range(0, 1);
-        spawnPosition.z = -Camera.main.transform.position.z;
-
-        StartCoroutine(DelayMove());
-        StartCoroutine(alphaFade(1.0f, ballLifeSpan));
-        StartCoroutine(DeathTime());
-
-        
+		// die when time is up
+        if (deathTimer.Finished)
+        {
+            // spawn new ball and destroy self
+            Camera.main.GetComponent<BallSpawner>().SpawnBall();
+            Destroy(gameObject);
+        }
 	}
 
-
-
-    IEnumerator DelayMove()
+    void FixedUpdate()
     {
-        yield return new WaitForSeconds(1);
-        rb2d.AddForce(dir * ConfigurationUtils.BallImpulseForce);
-
-    }
-
-    IEnumerator DeathTime()
-    {
-        while (GameManager.instance.TotalBalls > 0)
+        if(EffectUtils.IsSpeedup && !didSpeedup)
         {
-            yield return new WaitForSeconds(ballLifeSpan);
-            Destroy(gameObject);
-            ballSpawner.SpawnNewBall();
+            float speed = rb2d.velocity.magnitude;
+            rb2d.velocity = rb2d.velocity * (speed * 0.1f);
+            didSpeedup = true;
         }
-  
-    }
-
-    //Make the ball slowly fade out during it's lifetime for player feedback
-    IEnumerator alphaFade(float aValue, float aTime)
-    {
-        float alpha = m_NewColor.a;
-        for(float t = 1.0f; t > 0.0f; t -= Time.deltaTime / aTime)
+        else if(!EffectUtils.IsSpeedup && didSpeedup)
         {
-            Color newcolor = new Color(m_NewColor.r, m_NewColor.g, m_NewColor.b, t);
-            m_SpriteRenderer.color = newcolor;
-            yield return null;
+            float speed = rb2d.velocity.magnitude;
+            rb2d.velocity = rb2d.velocity * (speed * 0.5f);
+            didSpeedup = true;
+            didSpeedup = false;
         }
-        
-    }
-	
-	public void SetDirection(Vector2 direction)
-    {
-        
-        rb2d.velocity = direction * rb2d.velocity.magnitude;
+
     }
 
+    /// <summary>
+    /// Spawn new ball and destroy self when out of game
+    /// </summary>
     void OnBecameInvisible()
     {
-        Destroy(gameObject);
-        ballSpawner.SpawnNewBall();
+        // death timer destruction is in Update
+        if (!deathTimer.Finished)
+        {
+            // only spawn a new ball if below screen
+            float halfColliderHeight = 
+                gameObject.GetComponent<BoxCollider2D>().size.y / 2;
+            if (transform.position.y - halfColliderHeight < ScreenUtils.ScreenBottom)
+            {
+                ballSpawner.SpawnBall();
+                HUD.ReduceBallsLeft();
+            }
+            Destroy(gameObject);
+        }
     }
 
-    void OnApplicationQuit()
+    /// <summary>
+    /// Starts the ball moving
+    /// </summary>
+    void StartMoving()
     {
-        Destroy(this.gameObject);
+        if (EffectUtils.IsSpeedup)
+        {
+            // get the ball moving
+            float angle = -90 * Mathf.Deg2Rad;
+            Vector2 force = new Vector2(ConfigurationUtils.BallImpulseForce * Mathf.Cos(angle),ConfigurationUtils.BallImpulseForce * Mathf.Sin(angle));
+            GetComponent<Rigidbody2D>().AddForce(force  * EffectUtils.SpeedupFactor);
+        }else
+        {
+            // get the ball moving
+            float angle = -90 * Mathf.Deg2Rad;
+            Vector2 force = new Vector2(
+                ConfigurationUtils.BallImpulseForce * Mathf.Cos(angle),
+                ConfigurationUtils.BallImpulseForce * Mathf.Sin(angle));
+            GetComponent<Rigidbody2D>().AddForce(force);
+        }
+        
+        
     }
+
+    /// <summary>
+    /// Sets the ball direction to the given direction
+    /// </summary>
+    /// <param name="direction">direction</param>
+    public void SetDirection(Vector2 direction)
+    {
+        // get current rigidbody speed
+        Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+        float speed = rb2d.velocity.magnitude;
+        rb2d.velocity = direction * speed;
+    }
+
+    //public void SpeedupBall(float duration, float factor)
+    //{
+    //    if (EffectUtils.IsSpeedup)
+    //    {
+    //        speedupTimer.Duration += duration;
+    //    }
+    //    else
+    //    {
+    //        speedupTimer.Duration = duration;
+    //        speedupTimer.Run();
+    //        speedupFactor = factor;
+    //        isSpeedup = true;   
+    //    }
+    //}
 }
