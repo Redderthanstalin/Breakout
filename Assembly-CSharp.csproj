@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{15D4C6CA-7C28-9721-D1B1-99A858786DA0}</ProjectGuid>
+    <ProjectGuid>{1B91EFDE-9B25-2316-2D71-6E972A83EF85}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -70,23 +70,25 @@
      <Compile Include="Assets\scripts\gameplay\SpeedupEffectMonitor.cs" />
      <Compile Include="Assets\scripts\gameplay\StandardBlock.cs" />
      <Compile Include="Assets\scripts\gameplay\Timer.cs" />
-     <Compile Include="Assets\scripts\Menu\MenuButton.cs" />
+     <Compile Include="Assets\scripts\Menu\HelpMenu.cs" />
+     <Compile Include="Assets\scripts\Menu\MainMenu.cs" />
      <Compile Include="Assets\scripts\Menu\MenuManager.cs" />
      <Compile Include="Assets\scripts\Menu\MenuName.cs" />
+     <Compile Include="Assets\scripts\Menu\PauseMenu.cs" />
      <Compile Include="Assets\scripts\util\EffectUtils.cs" />
      <Compile Include="Assets\scripts\util\GameInitializer.cs" />
      <Compile Include="Assets\scripts\util\ScreenUtils.cs" />
  <Reference Include="UnityEditor.StandardEvents">
- <HintPath>D:/Downloads/eYes9ms6Eei5FgrpHNEYyg_79984e606b3a11e88631d3a640585b7a_2-Programming-Assignment-2-Solution/WackyBreakout/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>D:/Downloads/eYes9ms6Eei5FgrpHNEYyg_79984e606b3a11e88631d3a640585b7a_2-Programming-Assignment-2-Solution/WackyBreakout/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>D:/Downloads/eYes9ms6Eei5FgrpHNEYyg_79984e606b3a11e88631d3a640585b7a_2-Programming-Assignment-2-Solution/WackyBreakout/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>D:/Downloads/eYes9ms6Eei5FgrpHNEYyg_79984e606b3a11e88631d3a640585b7a_2-Programming-Assignment-2-Solution/WackyBreakout/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>D:/Coursera/Breakout/Breakout/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2018.2.0b7/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

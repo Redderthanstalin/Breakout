@@ -120,7 +120,7 @@ public class Paddle : MonoBehaviour
 
     void FreezeEffect(float duration)
     {
-        Debug.Log("Frozen!");
+
         if (freezeTimer.Running)
         {
             freezeTimer.Duration += duration;

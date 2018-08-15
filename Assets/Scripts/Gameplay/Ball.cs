@@ -40,12 +40,8 @@ public class Ball : MonoBehaviour
         //Find and store ball spawner
         ballSpawner = Camera.main.GetComponent<BallSpawner>();
 
-        //EventManager.AddSpeedupEventlistener(SpeedupBall);
-
         rb2d = gameObject.GetComponent<Rigidbody2D>();
-        //speedupTimer = gameObject.AddComponent<Timer>();
 
-        Debug.Log(EffectUtils.IsSpeedup);
     }
 
     /// <summary>
@@ -75,7 +71,7 @@ public class Ball : MonoBehaviour
         if(EffectUtils.IsSpeedup && !didSpeedup)
         {
             float speed = rb2d.velocity.magnitude;
-            rb2d.velocity = rb2d.velocity * (speed * 0.1f);
+            rb2d.velocity = rb2d.velocity * (speed * 2f);
             didSpeedup = true;
         }
         else if(!EffectUtils.IsSpeedup && didSpeedup)
@@ -144,18 +140,4 @@ public class Ball : MonoBehaviour
         rb2d.velocity = direction * speed;
     }
 
-    //public void SpeedupBall(float duration, float factor)
-    //{
-    //    if (EffectUtils.IsSpeedup)
-    //    {
-    //        speedupTimer.Duration += duration;
-    //    }
-    //    else
-    //    {
-    //        speedupTimer.Duration = duration;
-    //        speedupTimer.Run();
-    //        speedupFactor = factor;
-    //        isSpeedup = true;   
-    //    }
-    //}
 }

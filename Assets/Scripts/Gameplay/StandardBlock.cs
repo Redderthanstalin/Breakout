@@ -22,7 +22,7 @@ public class StandardBlock : Block
         // set points and random sprite
         points = ConfigurationUtils.StandardBlockPoints;
         SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        int spriteNumber = Random.Range(0, 3);
+        int spriteNumber = 0; // Random.Range(0, 3);
         if (spriteNumber == 0)
         {
             spriteRenderer.sprite = sprite0;

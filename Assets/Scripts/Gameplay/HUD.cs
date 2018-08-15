@@ -20,6 +20,9 @@ public class HUD : MonoBehaviour
     static int ballsLeft;
     const string BallsLeftPrefix = "Balls Left: ";
 
+    [SerializeField]
+    GameObject pausePanel;
+
     #endregion
 
     /// <summary>
@@ -56,6 +59,13 @@ public class HUD : MonoBehaviour
     {
         ballsLeft--;
         ballsLeftText.text = BallsLeftPrefix + ballsLeft;
+    }
+
+    public void HandleOnPauseButtonClickEvent()
+    {
+        Time.timeScale = 0;
+        MenuManager.GoToMenu(MenuName.Pause);
+        pausePanel.SetActive(true);
     }
 
 	#endregion

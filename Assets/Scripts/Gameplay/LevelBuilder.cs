@@ -75,7 +75,7 @@ public class LevelBuilder : MonoBehaviour
     /// <param name="position">position of the block</param>
     void PlaceBlock(Vector2 position)
     {
-        float randomBlockType = 0.95f;
+        float randomBlockType = Random.value;
         if (randomBlockType < ConfigurationUtils.StandardBlockProbability)
         {
             Instantiate(prefabStandardBlock, position, Quaternion.identity);
